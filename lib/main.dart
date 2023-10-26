@@ -1,3 +1,4 @@
+import 'package:coffee_shop/views/cart_page.dart';
 import 'package:coffee_shop/views/home_page.dart';
 import 'package:coffee_shop/views/login_page.dart';
 import 'package:coffee_shop/views/menu_item_page.dart';
@@ -18,11 +19,12 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      initialRoute: '/menu-item',
+      initialRoute: '/',
       routes: {
         '/': (context) => const HomePage(),
         '/login': (context) => const LoginPage(),
         '/menu-item': (context) => const MenuItemPage(),
+        '/cart': (context) => const CartPage(),
       },
     );
   }

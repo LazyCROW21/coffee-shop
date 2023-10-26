@@ -1,4 +1,4 @@
-import 'package:coffee_shop/models/item.dart';
+import 'package:coffee_shop/models/menu_item.dart';
 import 'package:flutter/material.dart';
 
 class MenuItemPage extends StatefulWidget {

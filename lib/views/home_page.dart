@@ -11,12 +11,32 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  int _selectedTab = 0;
+  int _selectedTab = 2;
   final _tabs = const [
     OrderTab(),
     InventoryTab(),
     BillsTab(),
   ];
+
+  Widget? _getFloatingButtons(BuildContext context) {
+    switch (_selectedTab) {
+      case 0:
+        return FloatingActionButton(
+          onPressed: () {
+            Navigator.of(context).pushNamed('/cart');
+          },
+          child: const Icon(Icons.shopping_cart),
+        );
+      case 1:
+        return FloatingActionButton(
+          onPressed: () {
+            Navigator.of(context).pushNamed('/menu-item');
+          },
+          child: const Icon(Icons.add),
+        );
+    }
+    return null;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +51,7 @@ class _HomePageState extends State<HomePage> {
         items: const [
           BottomNavigationBarItem(
             icon: Icon(Icons.home),
-            label: 'HOME',
+            label: 'Home',
           ),
           BottomNavigationBarItem(
               icon: Icon(Icons.warehouse), label: 'Inventory'),
@@ -39,12 +59,7 @@ class _HomePageState extends State<HomePage> {
               icon: Icon(Icons.adf_scanner_outlined), label: 'Bills')
         ],
       ),
-      floatingActionButton: _selectedTab == 1
-          ? FloatingActionButton(
-              onPressed: () {},
-              child: const Icon(Icons.add),
-            )
-          : null,
+      floatingActionButton: _getFloatingButtons(context),
     );
   }
 }
