@@ -1,4 +1,6 @@
 import 'package:coffee_shop/components/cart_list_tile.dart';
+import 'package:coffee_shop/models/cart_item.dart';
+import 'package:coffee_shop/models/menu_item.dart';
 import 'package:flutter/material.dart';
 
 class CartPage extends StatefulWidget {
@@ -26,7 +28,9 @@ class _CartPageState extends State<CartPage> {
               Expanded(
                 child: ListView.builder(
                   itemCount: _cartItems.length,
-                  itemBuilder: (context, index) => const CartListTile(),
+                  itemBuilder: (context, index) => CartListTile(
+                    orderItem: CartItem(item: MenuItem(), qty: 1),
+                  ),
                 ),
               ),
               Padding(

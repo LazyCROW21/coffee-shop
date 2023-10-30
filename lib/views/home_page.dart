@@ -11,7 +11,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  int _selectedTab = 2;
+  int _selectedTab = 0;
   final _tabs = const [
     OrderTab(),
     InventoryTab(),
@@ -41,6 +41,18 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(title: const Text('Coffee Shop'), actions: [
+        PopupMenuButton(
+            itemBuilder: (context) => [
+                  const PopupMenuItem(child: Text('Settings')),
+                  PopupMenuItem(
+                    child: const Text('Logout'),
+                    onTap: () {
+                      Navigator.of(context).pushReplacementNamed('/login');
+                    },
+                  )
+                ])
+      ]),
       body: _tabs[_selectedTab],
       bottomNavigationBar: BottomNavigationBar(
         elevation: 8,

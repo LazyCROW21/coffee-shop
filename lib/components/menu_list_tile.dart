@@ -11,6 +11,10 @@ class MenuListTile extends StatelessWidget {
       elevation: 4,
       margin: const EdgeInsets.only(bottom: 8),
       child: ListTile(
+        onTap: () {
+          Navigator.of(context)
+              .pushNamed('/menu-item', arguments: _menuItem.id);
+        },
         leading: ClipRRect(
             child: Image.network(
           _menuItem.imgUrl ?? '',

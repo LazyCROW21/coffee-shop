@@ -1,17 +1,15 @@
 import 'package:coffee_shop/models/cart_item.dart';
-import 'package:coffee_shop/models/menu_item.dart';
 import 'package:flutter/material.dart';
 
 class CartListTile extends StatefulWidget {
-  const CartListTile({super.key});
+  final CartItem orderItem;
+  const CartListTile({required this.orderItem, super.key});
 
   @override
   State<CartListTile> createState() => _CartListTileState();
 }
 
 class _CartListTileState extends State<CartListTile> {
-  CartItem orderItem = CartItem(item: MenuItem(), qty: 10);
-
   @override
   Widget build(BuildContext context) {
     return Card(
@@ -20,7 +18,7 @@ class _CartListTileState extends State<CartListTile> {
       child: ListTile(
         leading: ClipRRect(
             child: Image.network(
-          orderItem.item.imgUrl ?? '',
+          widget.orderItem.item.imgUrl ?? '',
           height: 64,
           width: 64,
           loadingBuilder: (context, child, loadingProgress) =>
@@ -28,18 +26,32 @@ class _CartListTileState extends State<CartListTile> {
           errorBuilder: (context, error, stackTrace) =>
               const Icon(Icons.broken_image),
         )),
-        title: Text(orderItem.item.title ?? 'loading..'),
-        subtitle:
-            Text("Price: Rs. ${orderItem.item.price?.toString() ?? '--'}"),
+        title: Text(widget.orderItem.item.title ?? 'loading..'),
+        subtitle: Text(
+            "Price: Rs. ${widget.orderItem.item.price?.toString() ?? '--'}"),
         trailing: SizedBox(
           width: 108,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              IconButton(onPressed: () {}, icon: const Icon(Icons.remove)),
-              const Text('1'),
-              IconButton(onPressed: () {}, icon: const Icon(Icons.add))
-            ],
+          child: Visibility(
+            visible: widget.orderItem.qty > 0,
+            replacement: ElevatedButton(
+              style: const ButtonStyle(
+                  padding: MaterialStatePropertyAll(
+                      EdgeInsets.symmetric(vertical: 8, horizontal: 0)),
+                  backgroundColor: MaterialStatePropertyAll(Colors.green)),
+              child: const Text(
+                '+ Add',
+                style: TextStyle(color: Colors.white),
+              ),
+              onPressed: () {},
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                IconButton(onPressed: () {}, icon: const Icon(Icons.remove)),
+                Text(widget.orderItem.qty.toString()),
+                IconButton(onPressed: () {}, icon: const Icon(Icons.add))
+              ],
+            ),
           ),
         ),
       ),

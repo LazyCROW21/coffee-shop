@@ -1,6 +1,7 @@
 import 'package:coffee_shop/components/menu_list_tile.dart';
-import 'package:coffee_shop/models/menu_item.dart';
+import 'package:coffee_shop/view_models/menu_list/menu_list_bloc.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class InventoryTab extends StatefulWidget {
   const InventoryTab({super.key});
@@ -10,13 +11,12 @@ class InventoryTab extends StatefulWidget {
 }
 
 class InventoryTabState extends State<InventoryTab> {
-  final _items = <MenuItem>[
-    MenuItem(id: 1, title: 'A', stock: 4, price: 45.0, imgUrl: ''),
-    MenuItem(id: 2, title: 'B', stock: 2, price: 55.0, imgUrl: ''),
-    MenuItem(id: 3, title: 'C', stock: 1, price: 23.0, imgUrl: ''),
-  ];
-
   final _searchInput = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+  }
 
   @override
   void dispose() {
@@ -37,11 +37,37 @@ class InventoryTabState extends State<InventoryTab> {
           ),
           const Divider(),
           Expanded(
-            child: ListView.builder(
-                itemCount: _items.length,
-                itemBuilder: (listContext, index) =>
-                    MenuListTile(_items[index])),
-          ),
+              child: BlocBuilder<MenuListBloc, MenuListState>(
+            buildWhen: (menuStatePrevious, menuStateCurrent) {
+              return true;
+            },
+            builder: (blocContext, state) {
+              if (state is MenuListLoading) {
+                return const Center(
+                  child: Text(
+                    'Loading...',
+                    style: TextStyle(
+                        color: Colors.grey, fontStyle: FontStyle.italic),
+                  ),
+                );
+              }
+              if (state.menuItems.isNotEmpty) {
+                return ListView.builder(
+                  itemCount: state.menuItems.length,
+                  itemBuilder: (listContext, index) =>
+                      MenuListTile(state.menuItems[index]),
+                );
+              }
+
+              return const Center(
+                child: Text(
+                  'Nothing to eat...',
+                  style: TextStyle(
+                      color: Colors.grey, fontStyle: FontStyle.italic),
+                ),
+              );
+            },
+          )),
         ],
       ),
     );

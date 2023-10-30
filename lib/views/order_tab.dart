@@ -1,6 +1,8 @@
 import 'package:coffee_shop/components/cart_list_tile.dart';
-import 'package:coffee_shop/models/menu_item.dart';
+import 'package:coffee_shop/models/cart_item.dart';
+import 'package:coffee_shop/view_models/menu_list/menu_list_bloc.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class OrderTab extends StatefulWidget {
   const OrderTab({super.key});
@@ -10,17 +12,6 @@ class OrderTab extends StatefulWidget {
 }
 
 class _OrderTabState extends State<OrderTab> {
-  final _menuItem = [
-    MenuItem(id: 1, title: 'A', price: 10),
-    MenuItem(id: 1, title: 'A', price: 10),
-    MenuItem(id: 1, title: 'A', price: 10),
-    MenuItem(id: 1, title: 'A', price: 10),
-    MenuItem(id: 1, title: 'A', price: 10),
-    MenuItem(id: 1, title: 'A', price: 10),
-    MenuItem(id: 1, title: 'A', price: 10),
-    MenuItem(id: 1, title: 'A', price: 10),
-  ];
-
   final _searchInput = TextEditingController();
 
   @override
@@ -42,11 +33,39 @@ class _OrderTabState extends State<OrderTab> {
           ),
           const Divider(),
           Expanded(
-            child: ListView.builder(
-              itemCount: _menuItem.length,
-              itemBuilder: (context, index) => const CartListTile(),
-            ),
-          ),
+              child: BlocBuilder<MenuListBloc, MenuListState>(
+            buildWhen: (menuStatePrevious, menuStateCurrent) {
+              return true;
+            },
+            builder: (blocContext, state) {
+              if (state is MenuListLoading) {
+                return const Center(
+                  child: Text(
+                    'Loading...',
+                    style: TextStyle(
+                        color: Colors.grey, fontStyle: FontStyle.italic),
+                  ),
+                );
+              }
+              if (state.menuItems.isNotEmpty) {
+                return ListView.builder(
+                  itemCount: state.menuItems.length,
+                  itemBuilder: (listContext, index) => CartListTile(
+                    orderItem: CartItem(
+                        item: state.menuItems.elementAt(index), qty: 0),
+                  ),
+                );
+              }
+
+              return const Center(
+                child: Text(
+                  'Nothing to eat...',
+                  style: TextStyle(
+                      color: Colors.grey, fontStyle: FontStyle.italic),
+                ),
+              );
+            },
+          )),
         ],
       ),
     );
