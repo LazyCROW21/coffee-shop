@@ -1,5 +1,7 @@
 import 'package:coffee_shop/models/cart_item.dart';
+import 'package:coffee_shop/view_models/cart_list/cart_list_bloc.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class CartListTile extends StatefulWidget {
   final CartItem orderItem;
@@ -42,14 +44,50 @@ class _CartListTileState extends State<CartListTile> {
                 '+ Add',
                 style: TextStyle(color: Colors.white),
               ),
-              onPressed: () {},
+              onPressed: () {
+                BlocProvider.of<CartListBloc>(context).add(SaveCartItem(
+                    cartItem: CartItem(item: widget.orderItem.item, qty: 1)));
+              },
             ),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                IconButton(onPressed: () {}, icon: const Icon(Icons.remove)),
-                Text(widget.orderItem.qty.toString()),
-                IconButton(onPressed: () {}, icon: const Icon(Icons.add))
+                CircleAvatar(
+                  backgroundColor: Colors.redAccent[20],
+                  child: IconButton(
+                    onPressed: () {
+                      if (widget.orderItem.qty == 1) {
+                        BlocProvider.of<CartListBloc>(context)
+                            .add(DeleteCartItem(cartItem: widget.orderItem));
+                      } else {
+                        BlocProvider.of<CartListBloc>(context).add(SaveCartItem(
+                            cartItem: CartItem(
+                                item: widget.orderItem.item,
+                                qty: widget.orderItem.qty - 1)));
+                      }
+                    },
+                    icon: const Icon(Icons.remove),
+                    color: Colors.red,
+                  ),
+                ),
+                Text(
+                  widget.orderItem.qty.toString(),
+                  style: const TextStyle(
+                      fontSize: 18, fontWeight: FontWeight.bold),
+                ),
+                CircleAvatar(
+                  backgroundColor: Colors.greenAccent[20],
+                  child: IconButton(
+                    onPressed: () {
+                      BlocProvider.of<CartListBloc>(context).add(SaveCartItem(
+                          cartItem: CartItem(
+                              item: widget.orderItem.item,
+                              qty: widget.orderItem.qty + 1)));
+                    },
+                    icon: const Icon(Icons.add),
+                    color: Colors.green,
+                  ),
+                )
               ],
             ),
           ),

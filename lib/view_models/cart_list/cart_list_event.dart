@@ -3,15 +3,20 @@ part of 'cart_list_bloc.dart';
 @immutable
 abstract class CartListEvent {}
 
-class AddCartItem extends CartListEvent {
+class SaveCartItem extends CartListEvent {
   final CartItem cartItem;
-  AddCartItem({required this.cartItem});
+  SaveCartItem({required this.cartItem});
 }
 
-class UpdateCartItem extends CartListEvent {
-  final CartItem cartItem;
-  UpdateCartItem({required this.cartItem});
-}
+// class IncreamentCartItemQty extends CartListEvent {
+//   final int id;
+//   IncreamentCartItemQty({required this.id});
+// }
+
+// class DecreamentCartItemQty extends CartListEvent {
+//   final int id;
+//   DecreamentCartItemQty({required this.id});
+// }
 
 class DeleteCartItem extends CartListEvent {
   final CartItem cartItem;

@@ -1,5 +1,7 @@
 import 'package:coffee_shop/components/cart_list_tile.dart';
 import 'package:coffee_shop/models/cart_item.dart';
+import 'package:coffee_shop/models/menu_item.dart';
+import 'package:coffee_shop/view_models/cart_list/cart_list_bloc.dart';
 import 'package:coffee_shop/view_models/menu_list/menu_list_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -32,13 +34,11 @@ class _OrderTabState extends State<OrderTab> {
                 prefixIcon: Icon(Icons.search), border: OutlineInputBorder()),
           ),
           const Divider(),
-          Expanded(
-              child: BlocBuilder<MenuListBloc, MenuListState>(
-            buildWhen: (menuStatePrevious, menuStateCurrent) {
-              return true;
-            },
-            builder: (blocContext, state) {
-              if (state is MenuListLoading) {
+          Expanded(child: Builder(
+            builder: (blocContext) {
+              final menuListState = blocContext.watch<MenuListBloc>().state;
+              final cartListState = blocContext.watch<CartListBloc>().state;
+              if (menuListState is MenuListLoading) {
                 return const Center(
                   child: Text(
                     'Loading...',
@@ -47,14 +47,19 @@ class _OrderTabState extends State<OrderTab> {
                   ),
                 );
               }
-              if (state.menuItems.isNotEmpty) {
+              if (menuListState.menuItems.isNotEmpty) {
                 return ListView.builder(
-                  itemCount: state.menuItems.length,
-                  itemBuilder: (listContext, index) => CartListTile(
-                    orderItem: CartItem(
-                        item: state.menuItems.elementAt(index), qty: 0),
-                  ),
-                );
+                    itemCount: menuListState.menuItems.length,
+                    itemBuilder: (listContext, index) {
+                      MenuItem currentItem =
+                          menuListState.menuItems.elementAt(index);
+                      int qty =
+                          cartListState.cartItems[currentItem.id ?? -1]?.qty ??
+                              0;
+                      return CartListTile(
+                        orderItem: CartItem(item: currentItem, qty: qty),
+                      );
+                    });
               }
 
               return const Center(

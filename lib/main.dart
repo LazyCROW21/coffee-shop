@@ -1,3 +1,4 @@
+import 'package:coffee_shop/view_models/cart_list/cart_list_bloc.dart';
 import 'package:coffee_shop/view_models/menu_list/menu_list_bloc.dart';
 import 'package:coffee_shop/views/cart_page.dart';
 import 'package:coffee_shop/views/home_page.dart';
@@ -17,7 +18,8 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider<MenuListBloc>(create: (providerContext) => MenuListBloc())
+        BlocProvider<MenuListBloc>(create: (providerContext) => MenuListBloc()),
+        BlocProvider<CartListBloc>(create: (providerContext) => CartListBloc())
       ],
       child: MaterialApp(
         title: 'Flutter Demo',
