@@ -11,7 +11,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  int _selectedTab = 0;
+  int _selectedTab = 2;
   final _tabs = const [
     OrderTab(),
     InventoryTab(),

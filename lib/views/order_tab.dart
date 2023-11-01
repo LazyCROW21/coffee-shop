@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:coffee_shop/components/cart_list_tile.dart';
 import 'package:coffee_shop/models/cart_item.dart';
 import 'package:coffee_shop/models/menu_item.dart';
@@ -15,11 +17,20 @@ class OrderTab extends StatefulWidget {
 
 class _OrderTabState extends State<OrderTab> {
   final _searchInput = TextEditingController();
+  Timer? _debounce;
 
   @override
   void dispose() {
     _searchInput.dispose();
+    _debounce?.cancel();
     super.dispose();
+  }
+
+  _onSearchChanged(String query) {
+    if (_debounce?.isActive ?? false) _debounce?.cancel();
+    _debounce = Timer(const Duration(milliseconds: 500), () {
+      setState(() {});
+    });
   }
 
   @override
@@ -30,6 +41,7 @@ class _OrderTabState extends State<OrderTab> {
         children: [
           TextField(
             controller: _searchInput,
+            onChanged: _onSearchChanged,
             decoration: const InputDecoration(
                 prefixIcon: Icon(Icons.search), border: OutlineInputBorder()),
           ),
@@ -48,11 +60,14 @@ class _OrderTabState extends State<OrderTab> {
                 );
               }
               if (menuListState.menuItems.isNotEmpty) {
+                List<MenuItem> filteredItems =
+                    menuListState.menuItems.where((element) {
+                  return element.title?.contains(_searchInput.text) ?? false;
+                }).toList();
                 return ListView.builder(
-                    itemCount: menuListState.menuItems.length,
+                    itemCount: filteredItems.length,
                     itemBuilder: (listContext, index) {
-                      MenuItem currentItem =
-                          menuListState.menuItems.elementAt(index);
+                      MenuItem currentItem = filteredItems.elementAt(index);
                       int qty =
                           cartListState.cartItems[currentItem.id ?? -1]?.qty ??
                               0;

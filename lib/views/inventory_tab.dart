@@ -1,4 +1,7 @@
+import 'dart:async';
+
 import 'package:coffee_shop/components/menu_list_tile.dart';
+import 'package:coffee_shop/models/menu_item.dart';
 import 'package:coffee_shop/view_models/menu_list/menu_list_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -12,7 +15,7 @@ class InventoryTab extends StatefulWidget {
 
 class InventoryTabState extends State<InventoryTab> {
   final _searchInput = TextEditingController();
-
+  Timer? _debounce;
   @override
   void initState() {
     super.initState();
@@ -21,7 +24,15 @@ class InventoryTabState extends State<InventoryTab> {
   @override
   void dispose() {
     _searchInput.dispose();
+    _debounce?.cancel();
     super.dispose();
+  }
+
+  _onSearchChanged(String query) {
+    if (_debounce?.isActive ?? false) _debounce?.cancel();
+    _debounce = Timer(const Duration(milliseconds: 500), () {
+      setState(() {});
+    });
   }
 
   @override
@@ -32,6 +43,7 @@ class InventoryTabState extends State<InventoryTab> {
         children: [
           TextField(
             controller: _searchInput,
+            onChanged: _onSearchChanged,
             decoration: const InputDecoration(
                 prefixIcon: Icon(Icons.search), border: OutlineInputBorder()),
           ),
@@ -52,10 +64,13 @@ class InventoryTabState extends State<InventoryTab> {
                 );
               }
               if (state.menuItems.isNotEmpty) {
+                List<MenuItem> filteredItems = state.menuItems.where((element) {
+                  return element.title?.contains(_searchInput.text) ?? false;
+                }).toList();
                 return ListView.builder(
-                  itemCount: state.menuItems.length,
+                  itemCount: filteredItems.length,
                   itemBuilder: (listContext, index) =>
-                      MenuListTile(state.menuItems[index]),
+                      MenuListTile(filteredItems[index]),
                 );
               }
 

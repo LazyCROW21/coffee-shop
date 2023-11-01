@@ -1,3 +1,4 @@
+import 'package:coffee_shop/view_models/bill_list/bill_list_bloc.dart';
 import 'package:coffee_shop/view_models/cart_list/cart_list_bloc.dart';
 import 'package:coffee_shop/view_models/menu_list/menu_list_bloc.dart';
 import 'package:coffee_shop/views/cart_page.dart';
@@ -19,6 +20,7 @@ class MyApp extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider<MenuListBloc>(create: (providerContext) => MenuListBloc()),
+        BlocProvider<BillListBloc>(create: (providerContext) => BillListBloc()),
         BlocProvider<CartListBloc>(create: (providerContext) => CartListBloc())
       ],
       child: MaterialApp(
