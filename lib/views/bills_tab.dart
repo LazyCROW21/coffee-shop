@@ -79,7 +79,7 @@ class _BillsTabState extends State<BillsTab> {
                   return ListView.separated(
                     itemCount: state.bills.length,
                     itemBuilder: (itemBuilderContext, index) =>
-                        const BillListTile(),
+                        BillListTile(state.bills.elementAt(index)),
                     separatorBuilder: (separatorBuilderContext, index) {
                       if (index != (state.bills.length - 1)) {
                         return const Divider(

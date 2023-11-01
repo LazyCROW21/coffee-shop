@@ -1,4 +1,7 @@
 import 'package:coffee_shop/components/cart_list_tile.dart';
+import 'package:coffee_shop/models/bill.dart';
+import 'package:coffee_shop/models/cart_item.dart';
+import 'package:coffee_shop/view_models/bill_list/bill_list_bloc.dart';
 import 'package:coffee_shop/view_models/cart_list/cart_list_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -92,7 +95,19 @@ class _CartPageState extends State<CartPage> {
                         style: const ButtonStyle(
                             backgroundColor:
                                 MaterialStatePropertyAll(Colors.purple)),
-                        onPressed: () {},
+                        onPressed: () {
+                          List<CartItem> cartItems = [];
+                          BlocProvider.of<CartListBloc>(context)
+                              .state
+                              .cartItems
+                              .forEach((key, value) {
+                            cartItems.add(value);
+                          });
+                          BlocProvider.of<BillListBloc>(context).add(AddBill(
+                              bill: Bill(
+                                  items: cartItems,
+                                  orderDateTime: DateTime.now())));
+                        },
                         child: const Text(
                           'Confirm Order',
                           style: TextStyle(color: Colors.white),

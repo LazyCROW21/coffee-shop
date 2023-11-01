@@ -6,7 +6,7 @@ part 'bill_list_event.dart';
 part 'bill_list_state.dart';
 
 class BillListBloc extends Bloc<BillListEvent, BillListState> {
-  BillListBloc() : super(const BillListInitial(bills: [])) {
+  BillListBloc() : super(BillListInitial(bills: [])) {
     on<BillListEvent>((event, emit) {
       on<AddBill>((event, emit) {
         state.bills.add(event.bill);
