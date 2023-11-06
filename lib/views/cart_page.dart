@@ -107,6 +107,19 @@ class _CartPageState extends State<CartPage> {
                               bill: Bill(
                                   items: cartItems,
                                   orderDateTime: DateTime.now())));
+
+                          BlocProvider.of<CartListBloc>(context)
+                              .add(ClearCart());
+
+                          Navigator.of(context).pop();
+                          ScaffoldMessenger.of(context)
+                              .showSnackBar(const SnackBar(
+                                  content: Text(
+                            'Order confirmed!',
+                            style: TextStyle(
+                                color: Colors.green,
+                                fontWeight: FontWeight.bold),
+                          )));
                         },
                         child: const Text(
                           'Confirm Order',

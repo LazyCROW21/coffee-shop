@@ -9,21 +9,24 @@ part 'cart_list_state.dart';
 
 class CartListBloc extends Bloc<CartListEvent, CartListState> {
   CartListBloc() : super(CartListInitial(cartItems: HashMap())) {
-    on<CartListEvent>((event, emit) {
-      on<SaveCartItem>((event, emit) {
-        state.cartItems[event.cartItem.item.id ?? -1] = event.cartItem;
-        emit(CartListUpdated(cartItems: state.cartItems));
-      });
+    on<SaveCartItem>((event, emit) {
+      state.cartItems[event.cartItem.item.id ?? -1] = event.cartItem;
+      emit(CartListUpdated(cartItems: state.cartItems));
+    });
 
-      // on<IncreamentCartItemQty>((event, emit) {
-      //   state.cartItems[event.id]?.qty++;
-      //   emit(CartListUpdated(cartItems: state.cartItems));
-      // });
+    // on<IncreamentCartItemQty>((event, emit) {
+    //   state.cartItems[event.id]?.qty++;
+    //   emit(CartListUpdated(cartItems: state.cartItems));
+    // });
 
-      on<DeleteCartItem>((event, emit) {
-        state.cartItems.remove(event.cartItem.item.id);
-        emit(CartListUpdated(cartItems: state.cartItems));
-      });
+    on<DeleteCartItem>((event, emit) {
+      state.cartItems.remove(event.cartItem.item.id);
+      emit(CartListUpdated(cartItems: state.cartItems));
+    });
+
+    on<ClearCart>((event, emit) {
+      state.cartItems.clear();
+      emit(CartListUpdated(cartItems: state.cartItems));
     });
   }
 }

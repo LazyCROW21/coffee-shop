@@ -22,3 +22,7 @@ class DeleteCartItem extends CartListEvent {
   final CartItem cartItem;
   DeleteCartItem({required this.cartItem});
 }
+
+class ClearCart extends CartListEvent {
+  ClearCart();
+}

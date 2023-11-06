@@ -1,5 +1,6 @@
 import 'package:coffee_shop/models/bill.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class BillListTile extends StatelessWidget {
   final Bill _bill;
@@ -15,6 +16,13 @@ class BillListTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var suffix = "th";
+    var digit = _bill.orderDateTime.day % 10;
+    if ((digit > 0 && digit < 4) &&
+        (_bill.orderDateTime.day < 11 || _bill.orderDateTime.day > 13)) {
+      suffix = ["st", "nd", "rd"][digit - 1];
+    }
+    final DateFormat formatter = DateFormat("E hh:mm a, d'$suffix' MMMM y");
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Column(
@@ -25,7 +33,7 @@ class BillListTile extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               const Text('#1012121'),
-              Text(_bill.orderDateTime.toString())
+              Text(formatter.format(_bill.orderDateTime))
             ],
           ),
           const Divider(),

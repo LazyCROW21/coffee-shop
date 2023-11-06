@@ -43,7 +43,7 @@ class _BillsTabState extends State<BillsTab> {
             Row(
               children: [
                 Expanded(
-                  flex: 5,
+                  flex: 1,
                   child: TextField(
                     controller: _searchInput,
                     decoration: const InputDecoration(
@@ -54,14 +54,13 @@ class _BillsTabState extends State<BillsTab> {
                 const SizedBox(
                   width: 16,
                 ),
-                Expanded(
-                    child: IconButton(
-                        onPressed: () {
-                          setState(() {
-                            _showFilters = true;
-                          });
-                        },
-                        icon: const Icon(Icons.filter_list)))
+                IconButton(
+                    onPressed: () {
+                      setState(() {
+                        _showFilters = true;
+                      });
+                    },
+                    icon: const Icon(Icons.filter_list))
               ],
             ),
             const Divider(),

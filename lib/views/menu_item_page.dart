@@ -188,6 +188,13 @@ class _MenuItemPageState extends State<MenuItemPage> {
                         }
                         _formKey.currentState!.reset();
                         Navigator.of(context).pushReplacementNamed('/');
+                        ScaffoldMessenger.of(context)
+                            .showSnackBar(const SnackBar(
+                                content: Text(
+                          'Item saved!',
+                          style: TextStyle(
+                              color: Colors.green, fontWeight: FontWeight.bold),
+                        )));
                       },
                       style: _saveButtonStyle,
                       child: Text(
@@ -242,6 +249,12 @@ class _MenuItemPageState extends State<MenuItemPage> {
                 BlocProvider.of<MenuListBloc>(context)
                     .add(DeleteMenuItem(menuItem: MenuItem(id: widget.id)));
                 Navigator.of(context).pop<bool>(true);
+                ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                    content: Text(
+                  'Item deleted!',
+                  style:
+                      TextStyle(color: Colors.red, fontWeight: FontWeight.bold),
+                )));
               },
             ),
           ],

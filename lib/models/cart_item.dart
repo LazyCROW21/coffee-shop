@@ -11,8 +11,13 @@ class CartItem {
 
   factory CartItem.fromJson(Map<String, dynamic> json) {
     return CartItem(
-      item: json['item'] as MenuItem,
+      item: MenuItem.fromJson(json['item']),
       qty: json['qty'] as int,
     );
+  }
+
+  @override
+  String toString() {
+    return '{"item":${item.toString()},"qty":${qty.toString()}}';
   }
 }

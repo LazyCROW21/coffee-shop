@@ -1,5 +1,5 @@
 class MenuItem {
-  final int? id;
+  int? id;
   final String? title;
   final String? description;
   final int? stock;
@@ -23,5 +23,10 @@ class MenuItem {
       price: json['price'] as double?,
       imgUrl: json['imgUrl'] as String?,
     );
+  }
+
+  @override
+  String toString() {
+    return '{"id":$id,"title":"$title","description":"$description","stock":$stock,"price":$price}';
   }
 }
